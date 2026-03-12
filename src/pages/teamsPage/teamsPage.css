@@ -1,6 +1,76 @@
 .contentContainer {
-    display: flex;
-    flex-direction: row;
-    margin: 0 auto;
     width: 35%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.teamsTitle {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
+.teamsText {
+    font-size: 25px;
+    color: var(--main-orange);
+}
+
+.teamsShift {
+    font-size: 15px;
+}
+
+.teamsSelection{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-bottom: 5vh;
+}
+
+.teamsButton{
+    font-size: 17px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--main-orange);
+    color: white;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.teamsButton:hover{
+    background-color: orange;
+    transition: 0.2s;
+}
+
+.teamsDisplay{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.displayBox{
+    border-style: solid;
+    border-color: var(--main-orange);
+    padding-left: 25px;
+    border-radius: 10px;
+}
+
+.displayMembers{
+    display: flex;
+    flex-direction: line;
+    flex-wrap: wrap;
+}
+
+.displayMembers li{
+    width: 40%;
+}
+
+.displayAlreadyIn{
+    color: var(--main-orange);
 }
