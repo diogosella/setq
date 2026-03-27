@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import pkg from 'pg';
+import 'dotenv/config'
 
 dotenv.config();
 

@@ -1,48 +1,33 @@
 import express from 'express';
-import bcrypt from 'bcryptjs';
-import pool from '../db.js';
+import { createClient } from '@supabase/supabase-js';
 
 const router = express.Router();
 
-router.post('/register', async (req, res) => {
-  const {name, email, password} = req.body;
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
-  const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+async function getUser(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1];
 
-  if (userExists.rows.length > 0) {
-    return res.status(400).json({ message: 'Email já cadastrado' });
+  if (!token) {
+    return res.status(401).json({ message: 'Token não fornecido' });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const { data, error } = await supabase.auth.getUser(token);
 
-  const newUser = await pool.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email', [name, email, hashedPassword])
-
-
-return res.status(201).json({ user: newUser.rows[0] })
-})
-
-router.post('/login', async (req, res) => {
-  const {email, password} = req.body;
-
-  const user = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-  
-  if (user.rows.length === 0) {
-    return res.status(400).json({message: 'Email ou senha inválido'});
-  }
-  
-  const userData = user.rows[0];
-  
-  const passwordMatch = await bcrypt.compare(password, userData.password);
-  
-  if (!passwordMatch) {
-    return res.status(400).json({message: 'Senha inválida'})
+  if (error || !data.user) {
+    return res.status(401).json({ message: 'Token inválido' });
   }
 
-  return res.status(400).json({user: userData});
-})
+  req.user = data.user;
+  next();
+}
 
-router.get('/me', async (req, res) => {
-  res.json(req.user)
-})
+// 👤 rota para pegar dados do usuário logado
+router.get('/me', getUser, async (req, res) => {
+  return res.json({ user: req.user });
+});
 
 export default router;
