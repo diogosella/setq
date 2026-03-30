@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import SignUp from '../../components/SignUp/index';
 import './signupPage.css';
-import type {User} from '../../components/SignUp/index';
+import type { User } from '../../components/SignUp/index';
 
 export default function SignUpPage() {
   const [, setUser] = useState<User | null>(null);
