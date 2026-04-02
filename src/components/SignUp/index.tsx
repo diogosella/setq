@@ -41,7 +41,7 @@ export default function Register({ setUser }: SignUpProps) {
     }
 
     try {
-    const { user } = await signUp(email, password);
+    const { user } = await signUp(email, password, name);
     setUser(user ? { name: user.user_metadata.name, email: user.email!, password: '' } : null);
 
       alert('Conta criada com sucesso!')

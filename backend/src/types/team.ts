@@ -6,21 +6,21 @@ export interface Team {
 }
 
 export interface UserTeam {
-  user_id: number;
+  user_id: string;
   team_id: number;
 }
 
 export interface TeamMember {
-  user_id: number;
+  user_id: string;
   users: {
-    id: number,
+    id: number;
     name: string;
   }[];
 }
 
 export interface TeamWithMembers extends Team {
   user_team: {
-    user_id: number;
+    user_id: string;
     users: {
       id: number;
       name: string;

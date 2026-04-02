@@ -70,14 +70,13 @@ export const joinTeam = async (team_id: number): Promise<void> => {
 
 export const getUserTeam = async (): Promise<number | null> => {
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) return null;
 
   const { data, error } = await supabase
-    .from('user_teams')
+    .from('user_team')
     .select('team_id')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();  // não lança erro quando não encontra nada
 
   if (error) return null;
   return data?.team_id ?? null;
@@ -94,4 +93,16 @@ export const getTeamMembers = async (team_id: number): Promise<TeamMember[]> => 
 
   if (error) throw error;
   return (data as TeamMember[]) ?? [];
+};
+
+export const leaveTeam = async (): Promise<void> => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error('Usuário não autenticado');
+
+  const { error } = await supabase
+    .from('user_team')
+    .delete()
+    .eq('user_id', user.id);
+
+  if (error) throw error;
 };
