@@ -88,3 +88,11 @@
     font-size: 14px;
     margin-bottom: 8px;
 }
+
+.alreadyTeamed {
+    margin-bottom: 12px;
+    padding: 2px 22px;
+    background-color: rgba(255, 166, 0, 0.343);
+    border-radius: 10px;
+    color: var(--main-orange);
+}

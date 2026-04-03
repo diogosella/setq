@@ -37,7 +37,7 @@ export default function TeamComponent() {
 
                         <div className="buttonContainer">
                             {userTeamId === team.id ? (
-                                <span>Você está nesse time</span>
+                                <span className="alreadyTeamed">Você está nesse time</span>
                             ) : team.is_full ? (
                                 <span className="fullTeamWarn">Time cheio</span>
                             ) : (
