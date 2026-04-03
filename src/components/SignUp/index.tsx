@@ -1,8 +1,19 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signUp } from "../../services/auth";
+import type { Dispatch, SetStateAction } from "react";
 
-export default function Register() {
+export type User = {
+  name: string,
+  email: string,
+  password: string,
+}
+
+type SignUpProps = {
+  setUser: Dispatch<SetStateAction<User | null>>;
+};
+
+export default function Register({ setUser }: SignUpProps) {
   const navigate = useNavigate();
 
   const [name, setName] = useState('')
@@ -30,9 +41,10 @@ export default function Register() {
     }
 
     try {
-      await signUp(email, password)
+    const { user } = await signUp(email, password, name);
+    setUser(user ? { name: user.user_metadata.name, email: user.email!, password: '' } : null);
 
-      alert('Conta criada com sucesso!')
+      alert('Um e-mail de confirmação foi enviado ao endeeço cadastrado! Confirme seu e-mail para realizar o login')
 
       navigate('/')
     } catch (err) {

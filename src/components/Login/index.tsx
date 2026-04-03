@@ -22,7 +22,7 @@ const [loading, setLoading] = useState(false)
             navigate('/teams')
           }
           else if (hour == 15 || hour == 21) {
-            navigate('/teamlist')
+            navigate('/teamslist')
           } else {
             navigate('/disabled')
           }
@@ -48,7 +48,7 @@ const [loading, setLoading] = useState(false)
                 <input type="password" className='inputArea' placeholder="Insira sua senha" value={password} onChange={(e) => setPassword(e.target.value) }/>
             </form>
                 <button className='mainButton' onClick={handleLogin} disabled={loading}>
-                    {loading ? (<img src="src\assets\images\loading.gif" className="loading"></img>) : ("Entrar")}
+                   {loading ? (<img src="src\assets\images\loading.gif" className="loading"></img>) : ("Entrar")}
                     </button>
                 {error && <p>{error}</p>}
             <Link to={'/signup'} className='secondaryButton'>Cadastrar</Link>

@@ -1,0 +1,98 @@
+.teamsDisplay{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.teamName {
+    font-size: 22px;
+    margin-bottom: 1vh;
+    color: black;
+    padding-left: 1vw;
+}
+
+.displayBox{
+    border: 2px solid var(--faded-gray);
+    border-radius: 10px;
+}
+
+.displayMembers{
+    display: flex;
+    flex-direction: line;
+    flex-wrap: wrap;
+    padding-left: 2vw;
+}
+
+.filledSpot, .freeSpot{
+    width: 40%;
+    margin: 6px 0 6px 0;
+}
+
+.freeSpot {
+    color: var(--faded-gray);
+}
+
+.filledSpot::marker {
+  color: var(--main-orange);
+}
+
+.displayAlreadyIn{
+    color: var(--main-orange);
+}
+
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.joinButton {
+    width: 95%;
+    color: var(--main-orange);
+    border: 1px solid var(--main-orange);
+    border-radius: 5px;
+    padding: 10px 0;
+    font-family: "gotham-bold";
+    margin: 0 0 18px 0;
+}
+
+.joinButton:hover {
+    cursor: pointer;
+    background-color: var(--main-orange);
+    color: white;
+    transition: 0.2s;
+}
+
+.joinIcon {
+    font-size: 12px;
+    margin-right: 12px;
+}
+
+.hrLine {
+     border-top: 1px solid var(--faded-gray);;
+    width: 95%;
+    margin-bottom: 14px;
+}
+
+.loadingTeams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 8vh;
+}
+
+.fullTeamWarn {
+    color: var(--faded-gray);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.alreadyTeamed {
+    margin-bottom: 12px;
+    padding: 2px 22px;
+    background-color: rgba(255, 166, 0, 0.343);
+    border-radius: 10px;
+    color: var(--main-orange);
+}
