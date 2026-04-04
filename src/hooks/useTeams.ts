@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTeams, joinTeam, getUserTeam, leaveTeam } from '../services/teams';
+import { getTeams, joinTeam, getUserTeam, leaveTeam, createTeam } from '../services/teams';
 import type { TeamWithMembers } from '../../backend/src/types/team';
 
 export const useTeams = () => {
@@ -41,5 +41,17 @@ export const useTeams = () => {
     }
   };
 
-  return { teams, userTeamId, loading, error, handleJoinTeam, handleLeaveTeam };
+  const handleCreateTeam = async (teamName: string) => {
+    try {
+        await createTeam(teamName);
+        await fetchData();
+    } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Erro desconhecido');
+    }
 };
+
+return { teams, userTeamId, loading, error, handleJoinTeam, handleLeaveTeam, handleCreateTeam };
+  
+  
+};
+

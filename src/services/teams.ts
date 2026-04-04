@@ -20,16 +20,32 @@ export const getTeams = async (): Promise<TeamWithMembers[]> => {
 };
 
 
-export const createTeam = async (team_name: string): Promise<Team[]> => {
-    const {data, error} = await supabase
-    .from('teams')
-    .insert([{team_name, is_full: false}])
-    .select()
-    .single();
+export const createTeam = async (team_name: string): Promise<void> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Usuário não autenticado');
 
-    if (error) throw error;
-    return data;
-}
+    const { data: existingMembership } = await supabase
+        .from('user_team')
+        .select('team_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+    if (existingMembership) throw new Error('Você já está em um time');
+
+    const { data: team, error: teamError } = await supabase
+        .from('teams')
+        .insert([{ team_name, is_full: false }])
+        .select()
+        .single();
+
+    if (teamError) throw teamError;
+
+    const { error: memberError } = await supabase
+        .from('user_team')
+        .insert([{ user_id: user.id, team_id: team.id }]);
+
+    if (memberError) throw memberError;
+};
 
 export const updateTeam = async (id: number, updates: Partial<Team>): Promise<Team> => {
 
@@ -76,7 +92,7 @@ export const getUserTeam = async (): Promise<number | null> => {
     .from('user_team')
     .select('team_id')
     .eq('user_id', user.id)
-    .maybeSingle();  // não lança erro quando não encontra nada
+    .maybeSingle(); 
 
   if (error) return null;
   return data?.team_id ?? null;
@@ -99,10 +115,28 @@ export const leaveTeam = async (): Promise<void> => {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Usuário não autenticado');
 
+  const { data: membership } = await supabase
+    .from('user_team')
+    .select('team_id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (!membership) return;
+
   const { error } = await supabase
     .from('user_team')
     .delete()
     .eq('user_id', user.id);
 
   if (error) throw error;
-};
+
+const { count } = await supabase
+    .from('user_team')
+    .select('*', { count: 'exact', head: true })
+    .eq('team_id', membership.team_id);
+
+if (count === 0) {
+    await deleteTeam(membership.team_id);
+}
+
+}

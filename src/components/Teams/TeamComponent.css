@@ -15,6 +15,7 @@
 .displayBox{
     border: 2px solid var(--faded-gray);
     border-radius: 10px;
+    margin-bottom: 8px;
 }
 
 .displayMembers{
@@ -89,10 +90,36 @@
     margin-bottom: 8px;
 }
 
-.alreadyTeamed {
+.alreadyTeamedContainer {
     margin-bottom: 12px;
-    padding: 2px 22px;
+}
+
+.alreadyTeamed {
+    padding: 4px 22px;
     background-color: rgba(255, 166, 0, 0.343);
+    border: solid 0.1px var(--main-orange);
     border-radius: 10px;
     color: var(--main-orange);
+}
+
+.leaveTeamButton {
+    margin-left: 20px;
+    border: 1px solid orange;
+    border-radius: 5px;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.leaveIcon {
+    color: var(--main-orange);
+    font-size: 16px;
+}
+
+.leaveTeamButton:hover {
+    background-color: var(--main-orange);
+
+    .leaveIcon {
+        color: white;
+    }
+    transition: 0.1s;
 }

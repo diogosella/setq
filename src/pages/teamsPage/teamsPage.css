@@ -1,3 +1,14 @@
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 80%); /* mais embaixo */
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%); /* posição final */
+    opacity: 1;
+  }
+}
+
 .contentContainer {
     width: 35%;
     height: 100vh;
@@ -5,6 +16,20 @@
     flex-direction: column;
     margin: 0 auto;
     background-color: white;
+    overflow-y: auto;
+}
+
+.contentContainer::-webkit-scrollbar {
+    width: 4px;
+}
+
+.contentContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.contentContainer::-webkit-scrollbar-thumb {
+    background-color: var(--main-orange);
+    border-radius: 10px;
 }
 
 .teamsTitle {
@@ -57,3 +82,42 @@
     transition: 0.2s;
 }
 
+.teamsButtonDisabled {
+    font-size: 17px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid var(--main-orange);
+    color: var(--main-orange);
+    background-color: none;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+}
+
+.createTeamComponent {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  background: white;
+  padding: 22px 20px;
+  z-index: 99;
+  border-radius: 8px;
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  animation: slideUp 0.4s ease forwards;
+}
+
+.createTeamCloseButton {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+}
