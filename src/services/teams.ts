@@ -71,11 +71,18 @@ export const deleteTeam = async (id: number): Promise<void> => {
 
 export const joinTeam = async (team_id: number): Promise<void> => {
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) throw new Error('Usuário não autenticado');
 
+  const { data: existing } = await supabase
+    .from('user_team')
+    .select('team_id')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (existing) throw new Error('Você já está em um time');
+
   const { error } = await supabase
-    .from('user_team') 
+    .from('user_team')
     .insert([{
       user_id: user.id,
       team_id: team_id
@@ -140,3 +147,55 @@ if (count === 0) {
 }
 
 }
+
+export const getUserCurrentTeam = async (): Promise<TeamWithMembers | null> => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from('user_team')
+    .select(`
+      team_id,
+      teams (
+        *,
+        user_team (
+          user_id,
+          users (id, name)
+        )
+      )
+    `)
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error || !data || !data.teams) return null;
+
+  return (Array.isArray(data.teams) ? data.teams[0] : data.teams) as unknown as TeamWithMembers;
+};
+
+export const registerFullTeam = async (team_id: number, team_name: string): Promise<void> => {
+  const { error } = await supabase
+    .from('fullteams')
+    .insert([{ team_id, team_name }]);
+
+  if (error) throw error;
+};
+
+export const markTeamAsFull = async (team_id: number): Promise<void> => {
+  const { error } = await supabase
+    .from('teams')
+    .update({ is_full: true })
+    .eq('id', team_id);
+
+  if (error) throw error;
+};
+
+
+export const getFullTeams = async () => {
+  const { data, error } = await supabase
+    .from('fullteams')
+    .select('*')
+    .order('filled_at', { ascending: true });
+
+  if (error) throw error;
+  return data ?? [];
+};
